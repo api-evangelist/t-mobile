@@ -13,5 +13,9 @@ A major American wireless network operator and the second-largest carrier in the
 ## Timestamps
 
 - **Created:** 2026-05-05
-- **Modified:** 2026-05-05
+- **Modified:** 2026-05-16
+
+## APIs
+
+- **T-Mobile Developer Portal** — [developer.t-mobile.com](https://developer.t-mobile.com/) — Partner and enterprise programs covering 5G, IoT, and connectivity services. Detailed product documentation typically requires partner registration.
 
