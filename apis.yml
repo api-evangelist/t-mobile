@@ -28,6 +28,10 @@ apis:
       - type: Documentation
         url: https://developer.t-mobile.com/
 common:
+  - type: GitHubOrganization
+    url: https://github.com/tmobile
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/t-mobile
   - type: Website
     url: https://www.t-mobile.com/
   - type: Developer
