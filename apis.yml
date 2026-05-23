@@ -46,6 +46,9 @@ common:
     url: https://www.t-mobile.com/news
   - type: Investors
     url: https://investor.t-mobile.com/
+  - type: DeveloperPortal
+    url: https://developers.t-mobile.com/
+    description: Public developer portal (verified live 2026-05-22)
 maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
