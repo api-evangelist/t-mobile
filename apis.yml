@@ -49,6 +49,8 @@ common:
   - type: DeveloperPortal
     url: https://developers.t-mobile.com/
     description: Public developer portal (verified live 2026-05-22)
+  - type: LLMsTxt
+    url: https://developer.t-mobile.com/llms.txt
 maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
