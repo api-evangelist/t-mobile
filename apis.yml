@@ -4,54 +4,61 @@ name: T-Mobile
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Telecommunications
-  - Wireless
-  - Mobile
-  - 5G
-description: 'A major American wireless network operator and the second-largest carrier in the United States. Known for its Un-carrier strategy disrupting the wireless industry with simplified plans, no-contract offerings, and aggressive 5G network expansion.'
+- Telecommunications
+- Wireless
+- Mobile
+- 5G
+description: A major American wireless network operator and the second-largest carrier
+  in the United States. Known for its Un-carrier strategy disrupting the wireless
+  industry with simplified plans, no-contract offerings, and aggressive 5G network
+  expansion.
 created: '2026-05-05'
 modified: '2026-05-16'
 specificationVersion: '0.19'
 apis:
-  - aid: t-mobile:developer-portal
-    name: T-Mobile Developer Portal
-    description: 'T-Mobile operates a developer portal that provides programmatic access to T-Mobile services for partners, enterprises, and IoT customers. Specific API documentation requires partner registration.'
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://developer.t-mobile.com/
-    baseURL: https://developer.t-mobile.com/
-    tags:
-      - Telecommunications
-      - 5G
-      - IoT
-      - Wireless
-    properties:
-      - type: Documentation
-        url: https://developer.t-mobile.com/
-common:
-  - type: GitHubOrganization
-    url: https://github.com/tmobile
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/t-mobile
-  - type: Website
-    url: https://www.t-mobile.com/
-  - type: Developer
+- aid: t-mobile:developer-portal
+  name: T-Mobile Developer Portal
+  description: T-Mobile operates a developer portal that provides programmatic access
+    to T-Mobile services for partners, enterprises, and IoT customers. Specific API
+    documentation requires partner registration.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.t-mobile.com/
+  baseURL: https://developer.t-mobile.com/
+  tags:
+  - Telecommunications
+  - 5G
+  - IoT
+  - Wireless
+  properties:
+  - type: Documentation
     url: https://developer.t-mobile.com/
-  - type: Business
-    url: https://www.t-mobile.com/business
-  - type: IoT
-    url: https://www.t-mobile.com/business/iot
-  - type: About
-    url: https://www.t-mobile.com/our-story
-  - type: News
-    url: https://www.t-mobile.com/news
-  - type: Investors
-    url: https://investor.t-mobile.com/
-  - type: DeveloperPortal
-    url: https://developers.t-mobile.com/
-    description: Public developer portal (verified live 2026-05-22)
-  - type: LLMsTxt
-    url: https://developer.t-mobile.com/llms.txt
+  - url: graphql/t-mobile-graphql.md
+    type: GraphQL
+common:
+- type: GitHubOrganization
+  url: https://github.com/tmobile
+- type: LinkedIn
+  url: https://www.linkedin.com/company/t-mobile
+- type: Website
+  url: https://www.t-mobile.com/
+- type: Developer
+  url: https://developer.t-mobile.com/
+- type: Business
+  url: https://www.t-mobile.com/business
+- type: IoT
+  url: https://www.t-mobile.com/business/iot
+- type: About
+  url: https://www.t-mobile.com/our-story
+- type: News
+  url: https://www.t-mobile.com/news
+- type: Investors
+  url: https://investor.t-mobile.com/
+- type: DeveloperPortal
+  url: https://developers.t-mobile.com/
+  description: Public developer portal (verified live 2026-05-22)
+- type: LLMsTxt
+  url: https://developer.t-mobile.com/llms.txt
 maintainers:
-  - FN: API Evangelist
-    email: info@apievangelist.com
-    X: '@apievangelist'
+- FN: API Evangelist
+  email: info@apievangelist.com
+  X: '@apievangelist'

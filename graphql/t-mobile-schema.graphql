@@ -1,0 +1,780 @@
+"""
+T-Mobile GraphQL Schema
+Conceptual schema representing T-Mobile wireless carrier services,
+DevEdge IoT platform, 5G network, billing, device management, and family controls.
+Provider: https://developer.t-mobile.com/
+"""
+
+# ─── Account & Identity ─────────────────────────────────────────────────────
+
+type Account {
+  id: ID!
+  accountNumber: String!
+  holder: AccountHolder!
+  subscribers: [Subscriber!]!
+  lines: [Line!]!
+  plan: Plan
+  invoices: [Invoice!]!
+  autoPay: AutoPay
+  billingCycle: BillingCycle
+  rewards: [T_LifeReward!]!
+  webhooks: [Webhook!]!
+  createdAt: String!
+  modifiedAt: String!
+}
+
+type TMobileAccount {
+  id: ID!
+  accountType: String
+  brand: String
+  status: String
+  primaryLine: Line
+  totalLines: Int
+  dataShared: ShareableData
+  account: Account!
+}
+
+type AccountHolder {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phone: PhoneNumber
+  address: String
+  dateOfBirth: String
+  verified: Boolean!
+}
+
+type Subscriber {
+  id: ID!
+  name: String!
+  msisdn: String!
+  line: Line!
+  device: Device
+  plan: Plan
+  dataUsage: DataUsage
+  voicemail: Voicemail
+  callHistory: [VoiceCall!]!
+  familyControls: FamilyControls
+}
+
+type APIKey {
+  id: ID!
+  key: String!
+  secret: String
+  scopes: [String!]!
+  createdAt: String!
+  expiresAt: String
+  active: Boolean!
+}
+
+type Token {
+  accessToken: String!
+  tokenType: String!
+  expiresIn: Int!
+  refreshToken: String
+  scope: String
+}
+
+# ─── Phone & Lines ───────────────────────────────────────────────────────────
+
+type PhoneNumber {
+  number: String!
+  areaCode: String
+  countryCode: String
+  type: String
+  line: Line
+}
+
+type Line {
+  id: ID!
+  phoneNumber: PhoneNumber!
+  subscriber: Subscriber
+  device: Device
+  plan: Plan!
+  sim: SIM
+  dataUsage: DataUsage
+  status: String!
+  activatedAt: String
+  multiSIM: MultiSIM
+}
+
+type MultiSIM {
+  id: ID!
+  line: Line!
+  sims: [SIMCard!]!
+  activeSIM: SIMCard
+}
+
+# ─── Devices ─────────────────────────────────────────────────────────────────
+
+type Device {
+  id: ID!
+  imei: IMEI!
+  info: DeviceInfo!
+  sim: SIM
+  esim: eSIM
+  line: Line
+  protection: DeviceProtection
+  paymentPlan: DevicePayment
+  tradeIn: TradeIn
+  hotspot: Hotspot
+  connectedCar: ConnectedCar
+}
+
+type DeviceInfo {
+  make: String!
+  model: String!
+  os: String
+  osVersion: String
+  color: String
+  storage: String
+  purchaseDate: String
+  retailPrice: Float
+}
+
+type IMEI {
+  value: String!
+  checkDigitValid: Boolean!
+  device: Device
+}
+
+type SIM {
+  id: ID!
+  iccid: String!
+  msisdn: String
+  status: String!
+  type: String
+  device: Device
+  line: Line
+}
+
+type eSIM {
+  eid: String!
+  profiles: [String!]!
+  activeProfile: String
+  device: Device
+  downloadable: Boolean!
+}
+
+type SIMCard {
+  id: ID!
+  iccid: String!
+  status: String!
+  activatedAt: String
+  line: Line
+}
+
+type DeviceSIM {
+  device: Device!
+  sim: SIMCard!
+  installedAt: String
+  active: Boolean!
+}
+
+type RouterDevice {
+  id: ID!
+  model: String!
+  serialNumber: String!
+  macAddress: String
+  ssid: String
+  connectedDevices: Int
+  homeInternet: HomeInternet
+  hotspot: Hotspot
+}
+
+type Hotspot {
+  id: ID!
+  enabled: Boolean!
+  ssid: String
+  password: String
+  connectedDevices: Int
+  dataUsed: Float
+  dataLimit: Float
+}
+
+type ConnectedCar {
+  id: ID!
+  vehicleVin: String
+  make: String
+  model: String
+  year: Int
+  line: Line
+  dataUsage: DataUsage
+  status: String!
+}
+
+# ─── Plans & Benefits ────────────────────────────────────────────────────────
+
+type Plan {
+  id: ID!
+  name: String!
+  description: String
+  monthlyPrice: Float!
+  dataBucket: DataBucket
+  features: [String!]!
+  includes5G: Boolean!
+  includesHotspot: Boolean!
+  magenta: Magenta
+  benefits: [String!]!
+}
+
+type Magenta {
+  id: ID!
+  tier: String!
+  includedLines: Int
+  pricePerLine: Float!
+  bingeOn: BingeOn
+  mlbtvBenefit: MLBTVBenefit
+  netflixBenefit: NetflixBenefit
+}
+
+type MagentaMax {
+  id: ID!
+  unlimitedPremiumData: Boolean!
+  priorityData: Boolean!
+  internationalData: Boolean!
+  netflixBenefit: NetflixBenefit
+  tvision: TVision
+  mlbtvBenefit: MLBTVBenefit
+}
+
+type MagentaPlus {
+  id: ID!
+  extraPerks: [String!]!
+  hotspotGB: Int
+  internationalOptions: [String!]!
+}
+
+type FiveGPlan {
+  id: ID!
+  networkType: String!
+  mmWave: Boolean!
+  subSix: Boolean!
+  maxDownloadMbps: Float
+  maxUploadMbps: Float
+  latencyMs: Float
+  coverageArea: String
+}
+
+type DataBucket {
+  id: ID!
+  totalGB: Float
+  usedGB: Float
+  remainingGB: Float
+  shared: Boolean!
+  shareableData: ShareableData
+  rollover: Boolean!
+}
+
+type ShareableData {
+  id: ID!
+  totalGB: Float!
+  allocations: [DataUsage!]!
+  lines: [Line!]!
+}
+
+type DataUsage {
+  lineId: ID!
+  periodStart: String!
+  periodEnd: String!
+  dataUsedGB: Float!
+  dataRemainingGB: Float
+  voiceMinutes: Int
+  smsCount: Int
+  mmsCount: Int
+  hotspotUsedGB: Float
+}
+
+type BingeOn {
+  enabled: Boolean!
+  streamingServices: [String!]!
+  videoResolution: String
+  eligible: Boolean!
+}
+
+type TVision {
+  id: ID!
+  subscriptionActive: Boolean!
+  channels: [String!]!
+  plan: String
+  monthlyPrice: Float
+}
+
+type MLBTVBenefit {
+  id: ID!
+  active: Boolean!
+  season: String
+  eligibleAccounts: Int
+  redeemUrl: String
+}
+
+type NetflixBenefit {
+  id: ID!
+  active: Boolean!
+  plan: String
+  includedScreens: Int
+  redeemUrl: String
+}
+
+# ─── Communication ───────────────────────────────────────────────────────────
+
+type VoiceCall {
+  id: ID!
+  from: PhoneNumber!
+  to: PhoneNumber!
+  startedAt: String!
+  duration: Int!
+  type: String!
+  cost: Float
+}
+
+type CallHistory {
+  lineId: ID!
+  calls: [VoiceCall!]!
+  totalMinutes: Int!
+  periodStart: String!
+  periodEnd: String!
+}
+
+type SMS {
+  id: ID!
+  from: String!
+  to: String!
+  body: String!
+  sentAt: String!
+  status: String!
+}
+
+type MMS {
+  id: ID!
+  from: String!
+  to: String!
+  mediaUrl: String!
+  caption: String
+  sentAt: String!
+  status: String!
+}
+
+type Voicemail {
+  id: ID!
+  lineId: ID!
+  messages: [VoicemailMessage!]!
+  unreadCount: Int!
+}
+
+type VoicemailMessage {
+  id: ID!
+  from: String!
+  duration: Int!
+  receivedAt: String!
+  transcription: String
+  read: Boolean!
+  audioUrl: String
+}
+
+type GroupMessage {
+  id: ID!
+  participants: [String!]!
+  messages: [SMS!]!
+  createdAt: String!
+  lastMessageAt: String!
+}
+
+# ─── Network ─────────────────────────────────────────────────────────────────
+
+type FiveGNetwork {
+  id: ID!
+  type: String!
+  band: String
+  coveragePercent: Float
+  averageDownloadMbps: Float
+  averageUploadMbps: Float
+  latencyMs: Float
+  deploymentStatus: String!
+}
+
+type FiveGHome {
+  id: ID!
+  serviceAddress: String!
+  downloadSpeedMbps: Float
+  uploadSpeedMbps: Float
+  router: RouterDevice
+  status: String!
+  installedAt: String
+}
+
+type FiveGHomeInternet {
+  id: ID!
+  plan: HomeInternet!
+  router: RouterDevice!
+  monthlyPrice: Float!
+  contractRequired: Boolean!
+  dataLimit: String
+  status: String!
+}
+
+type CoverageCheck {
+  latitude: Float!
+  longitude: Float!
+  address: String
+  lteAvailable: Boolean!
+  fiveGAvailable: Boolean!
+  fiveGHomeAvailable: Boolean!
+  indoorCoverage: String
+  outdoorCoverage: String
+  nearestTower: String
+}
+
+type Location {
+  latitude: Float!
+  longitude: Float!
+  accuracy: Float
+  timestamp: String!
+  source: String
+}
+
+type DeviceLocation {
+  device: Device!
+  location: Location!
+  consentGranted: Boolean!
+  updatedAt: String!
+}
+
+type MobileEdge {
+  id: ID!
+  edgeSiteId: String!
+  region: String!
+  latencyMs: Float
+  capacityMbps: Float
+  active: Boolean!
+}
+
+type HomeInternet {
+  id: ID!
+  address: String!
+  planName: String!
+  downloadMbps: Float
+  uploadMbps: Float
+  monthlyPrice: Float!
+  router: RouterDevice
+  status: String!
+}
+
+# ─── Family & Controls ───────────────────────────────────────────────────────
+
+type FamilyAllowance {
+  id: ID!
+  lineId: ID!
+  monthlyAllowanceUSD: Float!
+  usedUSD: Float!
+  remainingUSD: Float!
+  purchaseCategories: [String!]!
+}
+
+type FamilyControls {
+  id: ID!
+  lineId: ID!
+  screenTime: ScreenTime
+  contentBlock: ContentBlock
+  locationSharing: Boolean!
+  purchaseControls: FamilyAllowance
+}
+
+type ScreenTime {
+  lineId: ID!
+  dailyLimitMinutes: Int
+  usedTodayMinutes: Int
+  schedules: [ScreenTimeSchedule!]!
+}
+
+type ScreenTimeSchedule {
+  id: ID!
+  label: String!
+  startTime: String!
+  endTime: String!
+  daysOfWeek: [String!]!
+  appCategories: [String!]!
+}
+
+type ContentBlock {
+  lineId: ID!
+  adultContentBlocked: Boolean!
+  socialMediaBlocked: Boolean!
+  gamingBlocked: Boolean!
+  customBlockedDomains: [String!]!
+  allowedApps: [String!]!
+}
+
+# ─── Billing & Payments ──────────────────────────────────────────────────────
+
+type Invoice {
+  id: ID!
+  accountId: ID!
+  periodStart: String!
+  periodEnd: String!
+  totalDue: Float!
+  dueDate: String!
+  paid: Boolean!
+  lineItems: [InvoiceLineItem!]!
+  pdfUrl: String
+}
+
+type InvoiceLineItem {
+  description: String!
+  amount: Float!
+  quantity: Int
+  type: String!
+}
+
+type BillingCycle {
+  id: ID!
+  accountId: ID!
+  cycleStartDay: Int!
+  currentPeriodStart: String!
+  currentPeriodEnd: String!
+  nextBillDate: String!
+}
+
+type AutoPay {
+  id: ID!
+  accountId: ID!
+  enabled: Boolean!
+  paymentMethodId: String
+  discountUSD: Float
+  nextRunDate: String
+}
+
+type Payment {
+  id: ID!
+  accountId: ID!
+  amount: Float!
+  method: String!
+  status: String!
+  processedAt: String!
+  confirmationNumber: String!
+}
+
+type DevicePayment {
+  id: ID!
+  device: Device!
+  totalPrice: Float!
+  downPayment: Float!
+  monthlyPayment: Float!
+  remainingPayments: Int!
+  paidOff: Boolean!
+}
+
+type TradeIn {
+  id: ID!
+  device: Device!
+  estimatedValue: Float!
+  confirmedValue: Float
+  status: String!
+  submittedAt: String!
+  creditApplied: Boolean!
+}
+
+# ─── Protection & Assistance ─────────────────────────────────────────────────
+
+type DeviceProtection {
+  id: ID!
+  device: Device!
+  planName: String!
+  monthlyPrice: Float!
+  deductible: Float!
+  coveredPerils: [String!]!
+  claimsAllowed: Int!
+  claimsUsed: Int!
+  active: Boolean!
+}
+
+type AssuranceWireless {
+  id: ID!
+  subscriber: Subscriber!
+  lifeline: Boolean!
+  monthlyDataGB: Float!
+  monthlyMinutes: Int!
+  eligibilityProgram: String!
+  enrolledAt: String!
+  active: Boolean!
+}
+
+# ─── IoT & DevEdge ───────────────────────────────────────────────────────────
+
+type IoTConnect {
+  id: ID!
+  accountId: ID!
+  devices: [IoTDevice!]!
+  totalDevices: Int!
+  activeDevices: Int!
+  dataPoolGB: Float!
+  usedDataGB: Float!
+  apiKey: APIKey
+}
+
+type IoTDevice {
+  id: ID!
+  name: String!
+  imei: String
+  iccid: String
+  status: String!
+  lastSeen: String
+  dataUsedMB: Float!
+  firmware: String
+  location: Location
+  tags: [String!]!
+  simCard: SIMCard
+  devEdge: DevEdge
+}
+
+type DevEdge {
+  id: ID!
+  deviceId: ID!
+  edgeComputeEnabled: Boolean!
+  edgeSite: MobileEdge
+  sdkVersion: String
+  apiEndpoint: String
+  metrics: DevEdgeMetrics
+}
+
+type DevEdgeMetrics {
+  uptimePercent: Float!
+  latencyMs: Float!
+  requestsPerHour: Int!
+  errorRate: Float!
+  lastUpdated: String!
+}
+
+# ─── Rewards ─────────────────────────────────────────────────────────────────
+
+type T_LifeReward {
+  id: ID!
+  accountId: ID!
+  pointsBalance: Int!
+  tier: String!
+  rewards: [RewardOffer!]!
+  tuesdayOffers: [Tuesday!]!
+}
+
+type RewardOffer {
+  id: ID!
+  title: String!
+  description: String!
+  pointsCost: Int
+  expiresAt: String
+  category: String!
+  redeemUrl: String
+}
+
+type Tuesday {
+  id: ID!
+  weekOf: String!
+  offers: [TuesdayOffer!]!
+  claimedOffers: [String!]!
+}
+
+type TuesdayOffer {
+  id: ID!
+  brand: String!
+  title: String!
+  description: String!
+  expiresAt: String!
+  redeemCode: String
+  category: String!
+}
+
+# ─── Webhooks ─────────────────────────────────────────────────────────────────
+
+type Webhook {
+  id: ID!
+  url: String!
+  events: [String!]!
+  active: Boolean!
+  secret: String
+  createdAt: String!
+  lastDeliveredAt: String
+  failureCount: Int!
+}
+
+type WebhookDelivery {
+  id: ID!
+  webhookId: ID!
+  event: String!
+  payload: String!
+  responseCode: Int
+  deliveredAt: String!
+  success: Boolean!
+}
+
+# ─── Input Types ─────────────────────────────────────────────────────────────
+
+input FamilyControlsInput {
+  screenTimeLimitMinutes: Int
+  contentBlockEnabled: Boolean
+  adultContentBlocked: Boolean
+  socialMediaBlocked: Boolean
+  locationSharingEnabled: Boolean
+}
+
+input IoTDeviceInput {
+  name: String!
+  imei: String
+  iccid: String!
+  tags: [String!]
+  edgeComputeEnabled: Boolean
+}
+
+# ─── Root Types ──────────────────────────────────────────────────────────────
+
+type Query {
+  account(id: ID!): Account
+  tmobileAccount(id: ID!): TMobileAccount
+  subscriber(msisdn: String!): Subscriber
+  line(id: ID!): Line
+  device(imei: String!): Device
+  coverageCheck(latitude: Float!, longitude: Float!): CoverageCheck
+  fiveGNetwork(region: String!): FiveGNetwork
+  fiveGHomeInternet(address: String!): FiveGHomeInternet
+  homeInternet(id: ID!): HomeInternet
+  invoice(id: ID!): Invoice
+  billingCycle(accountId: ID!): BillingCycle
+  callHistory(lineId: ID!, limit: Int): CallHistory
+  dataUsage(lineId: ID!): DataUsage
+  iotConnect(accountId: ID!): IoTConnect
+  iotDevice(deviceId: ID!): IoTDevice
+  devEdge(deviceId: ID!): DevEdge
+  rewards(accountId: ID!): T_LifeReward
+  tuesday(weekOf: String): Tuesday
+  deviceLocation(deviceId: ID!): DeviceLocation
+  mobileEdge(region: String!): MobileEdge
+  deviceProtection(deviceId: ID!): DeviceProtection
+  assuranceWireless(subscriberId: ID!): AssuranceWireless
+}
+
+type Mutation {
+  activateSIM(simId: ID!, lineId: ID!): SIM
+  deactivateSIM(simId: ID!): SIM
+  updatePlan(accountId: ID!, planId: ID!): Plan
+  addLine(accountId: ID!, deviceId: ID!): Line
+  removeLine(lineId: ID!): Boolean
+  setFamilyControls(lineId: ID!, controls: FamilyControlsInput!): FamilyControls
+  makePayment(accountId: ID!, amount: Float!, method: String!): Payment
+  enableAutoPay(accountId: ID!, paymentMethodId: String!): AutoPay
+  disableAutoPay(accountId: ID!): AutoPay
+  submitTradeIn(deviceId: ID!, estimatedValue: Float!): TradeIn
+  registerWebhook(url: String!, events: [String!]!, secret: String): Webhook
+  deleteWebhook(id: ID!): Boolean
+  addIoTDevice(input: IoTDeviceInput!): IoTDevice
+  removeIoTDevice(deviceId: ID!): Boolean
+  enableDevEdge(deviceId: ID!): DevEdge
+  redeemTuesdayOffer(offerId: ID!, accountId: ID!): TuesdayOffer
+}
+
+type Subscription {
+  dataUsageAlert(lineId: ID!, thresholdGB: Float!): DataUsage
+  deviceStatusChanged(deviceId: ID!): IoTDevice
+  paymentProcessed(accountId: ID!): Payment
+  webhookDelivery(webhookId: ID!): WebhookDelivery
+  coverageEvent(latitude: Float!, longitude: Float!): CoverageCheck
+}
