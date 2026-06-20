@@ -2,7 +2,7 @@ aid: t-mobile
 url: https://raw.githubusercontent.com/api-evangelist/t-mobile/refs/heads/main/apis.yml
 name: T-Mobile
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Telecommunications
 - Wireless
@@ -21,7 +21,7 @@ apis:
   description: T-Mobile operates a developer portal that provides programmatic access
     to T-Mobile services for partners, enterprises, and IoT customers. Specific API
     documentation requires partner registration.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://developer.t-mobile.com/
   baseURL: https://developer.t-mobile.com/
   tags:
