@@ -35,6 +35,10 @@ apis:
   - url: graphql/t-mobile-graphql.md
     type: GraphQL
 common:
+- type: TrustCenter
+  url: security/t-mobile-trust-center.yml
+- type: DomainSecurity
+  url: security/t-mobile-domain-security.yml
 - type: GitHubOrganization
   url: https://github.com/tmobile
 - type: LinkedIn
