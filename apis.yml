@@ -25,7 +25,7 @@ description: A major American wireless network operator and the second-largest c
   expansion.
 created: '2026-05-05'
 modified: '2026-05-16'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: t-mobile:developer-portal
   name: T-Mobile Developer Portal
