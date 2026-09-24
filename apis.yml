@@ -54,8 +54,6 @@ apis:
   properties:
   - type: Documentation
     url: https://developer.t-mobile.com/
-  - url: graphql/t-mobile-graphql.md
-    type: GraphQL
 common:
 - type: TrustCenter
   url: security/t-mobile-trust-center.yml
